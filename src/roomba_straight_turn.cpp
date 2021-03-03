@@ -2,7 +2,7 @@
 
 RoombaStraightTurn::RoombaStraightTurn():private_nh("~")
 {
-    private_nh.param("hz", hz_, {10});
+    private_nh.param("hz", hz_, {50});
     sub_pose = nh.subscribe("/roomba/odometry", 10, &RoombaStraightTurn::odometry_callback, this);
 
     pub_cmd_vel = nh.advertise<roomba_500driver_meiji::RoombaCtrl>("/roomba/control", 1);
@@ -26,7 +26,7 @@ void RoombaStraightTurn::turn()
 {
     std::cout << current_pose << std::endl;
     roomba_500driver_meiji::RoombaCtrl cmd_vel;
-    cmd_vel.cntl.angular.z = 0.5;
+    cmd_vel.cntl.angular.z = 0.2;
     cmd_vel.mode = 11;
     pub_cmd_vel.publish(cmd_vel);
 }
