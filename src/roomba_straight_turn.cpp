@@ -36,15 +36,35 @@ void RoombaStraightTurn::process()
     ros::Rate loop_rate(hz_);
     double dist = 0;
     double bef_x = current_pose.pose.pose.position.x;
+    double bef_r,bef_p,bef_y;//出力値
+    double r, p, y;
+    tf::Quaternion quat(current_pose.pose.pose.orientation.x,current_pose.pose.pose.orientation.y,current_pose.pose.pose.orientation.z,current_pose.pose.pose.orientation.w);
+    tf::Matrix3x3(quat).getRPY(bef_r, bef_p, bef_y);//クォータニオン→オイラー角
     while(ros::ok())
     {
         if (dist <= 0.5){
             go_straight();
             dist += std::abs(current_pose.pose.pose.position.x - bef_x);
             bef_x = current_pose.pose.pose.position.x;
+            y = 0;
+            tf::Quaternion quat(current_pose.pose.pose.orientation.x,current_pose.pose.pose.orientation.y,current_pose.pose.pose.orientation.z,current_pose.pose.pose.orientation.w);
+            tf::Matrix3x3(quat).getRPY(r, p, y);
+        }
+        else if(y <= M_PI){
+            turn();
+            tf::Quaternion quat(current_pose.pose.pose.orientation.x,current_pose.pose.pose.orientation.y,current_pose.pose.pose.orientation.z,current_pose.pose.pose.orientation.w);
+            tf::Matrix3x3(quat).getRPY(r, p, y);
+            double delta_y = y - bef_y;
+            if (delta_y < 0){
+                delta_y += 2*M_PI;
+            }
+            y += delta_y;
+            bef_x = current_pose.pose.pose.position.x;
+            bef_y = y;
+            std::cout << y << std::endl;
         }
         else{
-            turn();
+            dist = 0;
         }
 
         ros::spinOnce();
