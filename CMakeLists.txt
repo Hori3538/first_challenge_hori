@@ -133,7 +133,7 @@ add_executable(roomba_straight_turn src/roomba_straight_turn.cpp)
 ## either from message generation or dynamic reconfigure
 target_link_libraries(roomba_straight_turn ${catkin_LIBRARIES})
 
-add_dependencies(roomba_straight_turn ${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(roomba_straight_turn  ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context

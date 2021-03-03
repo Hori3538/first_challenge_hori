@@ -22,13 +22,30 @@ void RoombaStraightTurn::go_straight()
     pub_cmd_vel.publish(cmd_vel);
 }
 
+void RoombaStraightTurn::turn()
+{
+    std::cout << current_pose << std::endl;
+    roomba_500driver_meiji::RoombaCtrl cmd_vel;
+    cmd_vel.cntl.angular.z = 0.5;
+    cmd_vel.mode = 11;
+    pub_cmd_vel.publish(cmd_vel);
+}
 
 void RoombaStraightTurn::process()
 {
     ros::Rate loop_rate(hz_);
+    double dist = 0;
+    double bef_x = current_pose.pose.pose.position.x;
     while(ros::ok())
     {
-        go_straight();
+        if (dist <= 0.5){
+            go_straight();
+            dist += std::abs(current_pose.pose.pose.position.x - bef_x);
+            bef_x = current_pose.pose.pose.position.x;
+        }
+        else{
+            turn();
+        }
 
         ros::spinOnce();
         loop_rate.sleep();
