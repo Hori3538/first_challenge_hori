@@ -37,7 +37,6 @@ void RoombaStraightTurn::process()
     double dist = 0;
     double bef_x = current_pose.pose.pose.position.x;
     double bef_r,bef_p,bef_y;//出力値
-    double r, p, y;
     double sum_y = 0;
     tf::Quaternion quat(current_pose.pose.pose.orientation.x,current_pose.pose.pose.orientation.y,current_pose.pose.pose.orientation.z,current_pose.pose.pose.orientation.w);
     tf::Matrix3x3(quat).getRPY(bef_r, bef_p, bef_y);//クォータニオン→オイラー角
@@ -53,14 +52,15 @@ void RoombaStraightTurn::process()
             std::cout << "dist" << dist << std::endl;
         }
         else if(sum_y <= M_PI){
+            double r, p, y;
             turn();
             tf::Quaternion quat(current_pose.pose.pose.orientation.x,current_pose.pose.pose.orientation.y,current_pose.pose.pose.orientation.z,current_pose.pose.pose.orientation.w);
             tf::Matrix3x3(quat).getRPY(r, p, y);
             double delta_y = y - bef_y;
-            if (delta_y < 0){
-                delta_y += 2*M_PI;
+            if (std::abs(delta_y) < M_PI/2){
+                sum_y += delta_y;
             }
-            sum_y += delta_y;
+
             std::cout << "yowyow" << sum_y << std::endl;
             bef_x = current_pose.pose.pose.position.x;
             bef_y = y;
