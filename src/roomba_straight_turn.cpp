@@ -61,7 +61,7 @@ void RoombaStraightTurn::process()
                 delta_y += 2*M_PI;
             }
             sum_y += delta_y;
-            std::cout << "yowyow" << y << std::endl;
+            std::cout << "yowyow" << sum_y << std::endl;
             bef_x = current_pose.pose.pose.position.x;
             bef_y = y;
         }
