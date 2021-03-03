@@ -56,10 +56,10 @@ void RoombaStraightTurn::process()
             tf::Quaternion quat(current_pose.pose.pose.orientation.x,current_pose.pose.pose.orientation.y,current_pose.pose.pose.orientation.z,current_pose.pose.pose.orientation.w);
             tf::Matrix3x3(quat).getRPY(r, p, y);
             double delta_y = y - bef_y;
-            if (delta_y < 0){
-                delta_y += 2*M_PI;
+            if (! delta_y < 0){
+                y += delta_y;
             }
-            y += delta_y;
+
             std::cout << "yowyow" << y << std::endl;
             bef_x = current_pose.pose.pose.position.x;
             bef_y = y;
