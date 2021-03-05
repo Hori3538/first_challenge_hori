@@ -38,7 +38,9 @@ void RoombaStraightTurn::turn()
 
 void RoombaStraightTurn::process()
 {
-    std::cout << "ranges" << laser.ranges[539] << std::endl;
+    if (laser.ranges.size() > 1000){
+        std::cout << "ranges" << laser.ranges[539] << std::endl;
+    }
     ros::Rate loop_rate(hz_);
     double dist = 0;
     double bef_x = current_pose.pose.pose.position.x;
