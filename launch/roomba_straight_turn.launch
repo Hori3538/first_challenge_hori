@@ -2,6 +2,9 @@
 <launch>
     <node pkg = "roomba_500driver_meiji" name = "main500" type = "main500"/>
     <node pkg="first_challenge_hori" name="roomba_straight_turn" type="roomba_straight_turn" output="screen"/>
+    <node pkg = "urg-node" name = "urg-node" type = "urg-node">
+        <param name="serial_port" value="/dev/ttyACM0"/>
+    </node>
 </launch>
 
 

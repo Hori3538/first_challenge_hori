@@ -11,11 +11,16 @@ RoombaStraightTurn::RoombaStraightTurn():private_nh("~")
 void RoombaStraightTurn::odometry_callback(const nav_msgs::Odometry::ConstPtr &msg)
 {
     current_pose = *msg;
-}
 
+
+}
+void RoombaStraightTurn::laser_callback(const sensor_msgs::LaserScan::ConstPtr &msg)
+{
+    laser = *msg;
+}
 void RoombaStraightTurn::go_straight()
 {
-    std::cout<<current_pose<<std::endl;
+    std::cout<<current_pose.pose.pose<<std::endl;
     roomba_500driver_meiji::RoombaCtrl cmd_vel;
     cmd_vel.cntl.linear.x = 0.1;
     cmd_vel.mode = 11;
@@ -24,7 +29,7 @@ void RoombaStraightTurn::go_straight()
 
 void RoombaStraightTurn::turn()
 {
-    std::cout << current_pose << std::endl;
+    std::cout << current_pose.pose.pose << std::endl;
     roomba_500driver_meiji::RoombaCtrl cmd_vel;
     cmd_vel.cntl.angular.z = 0.2;
     cmd_vel.mode = 11;
@@ -33,6 +38,7 @@ void RoombaStraightTurn::turn()
 
 void RoombaStraightTurn::process()
 {
+    std::cout << "ranges" << laser.ranges[539] << std::endl;
     ros::Rate loop_rate(hz_);
     double dist = 0;
     double bef_x = current_pose.pose.pose.position.x;
