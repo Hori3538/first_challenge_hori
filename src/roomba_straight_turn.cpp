@@ -51,6 +51,7 @@ void RoombaStraightTurn::process()
     double bef_x = current_pose.pose.pose.position.x;
     double bef_r,bef_p,bef_y;//出力値
     double sum_y = 0;
+    bool flag = false;
     tf::Quaternion quat(current_pose.pose.pose.orientation.x,current_pose.pose.pose.orientation.y,current_pose.pose.pose.orientation.z,current_pose.pose.pose.orientation.w);
     tf::Matrix3x3(quat).getRPY(bef_r, bef_p, bef_y);//クォータニオン→オイラー角
     while(ros::ok())
@@ -58,7 +59,7 @@ void RoombaStraightTurn::process()
         if (laser.ranges.size() > 1000){
             std::cout << "ranges" << laser.ranges[539] << std::endl;
         }
-        if (dist <= 1.0 && laser.ranges.size() > 1000 && laser.ranges[539] > 0.5){
+        if (dist <= 1.0){
             go_straight();
             dist += std::abs(current_pose.pose.pose.position.x - bef_x);
             bef_x = current_pose.pose.pose.position.x;
@@ -81,12 +82,13 @@ void RoombaStraightTurn::process()
             bef_x = current_pose.pose.pose.position.x;
             bef_y = y;
         }
-        else if (laser.ranges.size() > 1000 && laser.ranges[539] < 0.5){
-            stop();
+        else if (laser.ranges.size() > 1000 && laser.ranges[539] > 0.5){
+            go_straight();
         }
         else{
-            dist = 0;
+            stop();
         }
+
 
         ros::spinOnce();
         loop_rate.sleep();
