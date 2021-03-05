@@ -4,6 +4,8 @@ RoombaStraightTurn::RoombaStraightTurn():private_nh("~")
 {
     private_nh.param("hz", hz_, {50});
     sub_pose = nh.subscribe("/roomba/odometry", 10, &RoombaStraightTurn::odometry_callback, this);
+    sub_laser = nh.subscribe("/scan", 10, &RoombaStraightTurn::laser_callback, this);
+
 
     pub_cmd_vel = nh.advertise<roomba_500driver_meiji::RoombaCtrl>("/roomba/control", 1);
 }

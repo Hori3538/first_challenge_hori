@@ -24,6 +24,7 @@ class RoombaStraightTurn
         ros::NodeHandle nh;
         ros::NodeHandle private_nh;
         ros::Subscriber sub_pose;
+        ros::Subscriber sub_laser;
         ros::Publisher pub_cmd_vel;
         nav_msgs::Odometry current_pose;
         sensor_msgs::LaserScan laser;
