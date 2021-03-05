@@ -56,12 +56,12 @@ void RoombaStraightTurn::process()
             go_straight();
             dist += std::abs(current_pose.pose.pose.position.x - bef_x);
             bef_x = current_pose.pose.pose.position.x;
-            sum_y = 0;
+
             tf::Quaternion quat(current_pose.pose.pose.orientation.x,current_pose.pose.pose.orientation.y,current_pose.pose.pose.orientation.z,current_pose.pose.pose.orientation.w);
             tf::Matrix3x3(quat).getRPY(bef_r, bef_p, bef_y);
             std::cout << "dist" << dist << std::endl;
         }
-        else if(sum_y <= 2*M_PI && laser.ranges.size() > 1000 && laser.ranges[539] > 0.5){
+        else if(sum_y <= 2*M_PI){
             double r, p, y;
             turn();
             tf::Quaternion quat(current_pose.pose.pose.orientation.x,current_pose.pose.pose.orientation.y,current_pose.pose.pose.orientation.z,current_pose.pose.pose.orientation.w);
