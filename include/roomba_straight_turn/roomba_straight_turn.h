@@ -18,6 +18,7 @@ class RoombaStraightTurn
         void laser_callback(const sensor_msgs::LaserScan::ConstPtr &msg);
         void go_straight();
         void turn();
+        void stop();
 
         int hz_;
 

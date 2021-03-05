@@ -28,7 +28,13 @@ void RoombaStraightTurn::go_straight()
     cmd_vel.mode = 11;
     pub_cmd_vel.publish(cmd_vel);
 }
-
+void RoombaStraightTurn::stop()
+{
+    std::cout<<current_pose.pose.pose<<std::endl;
+    roomba_500driver_meiji::RoombaCtrl cmd_vel;
+    cmd_vel.mode = 11;
+    pub_cmd_vel.publish(cmd_vel);
+}
 void RoombaStraightTurn::turn()
 {
     std::cout << current_pose.pose.pose << std::endl;
@@ -71,11 +77,12 @@ void RoombaStraightTurn::process()
                 delta_y += 2*M_PI;
             }
             sum_y += delta_y;
-
-
             std::cout << "yowyow" << sum_y << std::endl;
             bef_x = current_pose.pose.pose.position.x;
             bef_y = y;
+        }
+        else if (laser.ranges.size() > 1000 && laser.ranges[539] < 0.5){
+            stop();
         }
         else{
             dist = 0;
